@@ -22,7 +22,7 @@ void handle_flagh(void)
     my_printf("as\npossible. The addresses are MEM_SIZE modulo.");
 }
 
-int main(int argc, char **argv, char **env)
+int main(int argc, char **argv)
 {
     if (argc > 1 && my_strcmp(argv[1], "-h") == 0 && argc == 2) {
         handle_flagh();
