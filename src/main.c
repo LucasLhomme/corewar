@@ -6,7 +6,6 @@
 */
 
 #include "project.h"
-#include "my.h"
 
 void handle_flagh(void)
 {
@@ -24,9 +23,14 @@ void handle_flagh(void)
 
 int main(int argc, char **argv)
 {
+    vm_t *vm = NULL;
+
     if (argc > 1 && my_strcmp(argv[1], "-h") == 0 && argc == 2) {
         handle_flagh();
         return 0;
     }
+    vm = parse_argument(argv);
+    if (vm != NULL)
+        return 84;
     return 0;
 }

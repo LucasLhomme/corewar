@@ -7,7 +7,7 @@
 
 # Variables
 NAME = corewar
-CFLAGS = -I./include
+CFLAGS = -I./include -I ./B-CPE-200_op/
 FLAGS = -Wall -Wextra -W
 SRC_PATH = ./src
 SRC =	$(SRC_PATH)/main.c \
