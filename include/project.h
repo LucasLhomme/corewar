@@ -40,5 +40,6 @@ typedef struct vm_s {
 /* memory */
 
 void free_vm(vm_t *vm);
+vm_t *parse_argument(char **av);
 
 #endif /* !PROJECT_H_ */

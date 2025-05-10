@@ -11,6 +11,8 @@ CFLAGS = -I./include -I ./B-CPE-200_op/
 FLAGS = -Wall -Wextra -W
 SRC_PATH = ./src
 SRC =	$(SRC_PATH)/main.c \
+		$(SRC_PATH)/vm.c \
+		$(SRC_PATH)/utils.c \
 
 OBJ = $(SRC:.c=.o)
 LIBMY = lib/libmy.a
