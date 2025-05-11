@@ -52,6 +52,26 @@ static void display_robot(robot_t *robot, int num)
     display_code(robot);
 }
 
+static void display_info(vm_t *vm, champions_t *champions, int val)
+{
+    if (val == 0) {
+        display_player_info(vm->player1, 1);
+        display_player_info(vm->player2, 2);
+        if (vm->player3)
+            display_player_info(vm->player3, 3);
+        if (vm->player4)
+            display_player_info(vm->player4, 4);
+    }
+    if (val == 1) {
+        display_robot(champions->champion1, 1);
+        display_robot(champions->champion2, 2);
+        if (vm->player3)
+            display_robot(champions->champion3, 3);
+        if (vm->player4)
+            display_robot(champions->champion4, 4);
+    }
+}
+
 static void initialize_champion(champions_t *champions, vm_t *vm)
 {
     if (vm->player1)
@@ -88,26 +108,6 @@ static champions_t *parse_champions(vm_t *vm)
         parse_cor_file(vm->player4->player_name, champions->champion4) == 84)
         return NULL;
     return champions;
-}
-
-static void display_info(vm_t *vm, champions_t *champions, int val)
-{
-    if (val == 0) {
-        display_player_info(vm->player1, 1);
-        display_player_info(vm->player2, 2);
-        if (vm->player3)
-            display_player_info(vm->player3, 3);
-        if (vm->player4)
-            display_player_info(vm->player4, 4);
-    }
-    if (val == 1) {
-        display_robot(champions->champion1, 1);
-        display_robot(champions->champion2, 2);
-        if (vm->player3)
-            display_robot(champions->champion3, 3);
-        if (vm->player4)
-            display_robot(champions->champion4, 4);
-    }
 }
 
 int main(int argc, char **argv)
