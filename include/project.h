@@ -7,6 +7,9 @@
 
 #ifndef PROJECT_H
     #define PROJECT_H
+    #define PROG_NAME_LENGTH 128
+    #define CHAMP_MAX_SIZE   682
+    #define COREWAR_EXEC_MAGIC 0xea83f3
     #include "my.h"
     #include "op.h"
     #include <stdio.h>
@@ -25,6 +28,14 @@
 
 /*Struct*/
 
+
+typedef struct robot_s {
+    char name[PROG_NAME_LENGTH + 1];
+    char comment[COMMENT_LENGTH + 1];
+    uint8_t code[CHAMP_MAX_SIZE];
+    uint32_t code_size;
+} robot_t;
+
 typedef struct player_s {
     char *player_name;
     int nb_player;
@@ -39,6 +50,13 @@ typedef struct vm_s {
     player_t *player4;
 }vm_t;
 
+typedef struct champions_s {
+    robot_t *champion1;
+    robot_t *champion2;
+    robot_t *champion3;
+    robot_t *champion4;
+} champions_t;
+
 /*Function*/
 
 /* memory */
@@ -50,6 +68,8 @@ void free_vm(vm_t *vm);
 vm_t *parse_argument(char **av);
 
 player_t *find_player_name(vm_t *vm, char *name);
+
+int parse_cor_file(const char *filename, robot_t *robot);
 
 /* error handling */
 
