@@ -13,6 +13,7 @@ SRC_PATH = ./src
 SRC =	$(SRC_PATH)/main.c \
 		$(SRC_PATH)/vm.c \
 		$(SRC_PATH)/utils.c \
+		$(SRC_PATH)/handle_error.c \
 
 OBJ = $(SRC:.c=.o)
 LIBMY = lib/libmy.a

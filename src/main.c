@@ -21,6 +21,16 @@ void handle_flagh(void)
     my_printf("other as\npossible. The addresses are MEM_SIZE modulo.");
 }
 
+static void display_player_info(player_t *player, int num)
+{
+    if (!player)
+        return;
+    my_printf("P%d: name:%s, num:%d, addr:%s\n", num,
+        player->player_name ? player->player_name : "NULL",
+        player->nb_player,
+        player->ad_player ? player->ad_player : "NULL");
+}
+
 int main(int argc, char **argv)
 {
     vm_t *vm = NULL;
@@ -32,7 +42,13 @@ int main(int argc, char **argv)
     vm = parse_argument(argv);
     if (vm == NULL)
         return 84;
-    printf("P1: name:%s, num:%d\nP2: name:%s, num:%d\n", vm->player1, vm->nb_player1, vm->player2, vm->nb_player2);
-    printf("%d\n", vm->nb_cycles);
+    if (handle_vm(vm, argc) == 84)
+        return 84;
+    display_player_info(vm->player1, 1);
+    display_player_info(vm->player2, 2);
+    display_player_info(vm->player3, 3);
+    display_player_info(vm->player4, 4);
+    my_printf("Dump cycle: %d\n", vm->nb_cycles);
+    free_vm(vm);
     return 0;
 }

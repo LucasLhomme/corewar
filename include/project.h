@@ -25,14 +25,18 @@
 
 /*Struct*/
 
+typedef struct player_s {
+    char *player_name;
+    int nb_player;
+    char *ad_player;
+}player_t;
+
 typedef struct vm_s {
     int nb_cycles;
-    char *player1;
-    char *player2;
-    int nb_player1;
-    int nb_player2;
-    char *ad_player1;
-    char *ad_player2;
+    player_t *player1;
+    player_t *player2;
+    player_t *player3;
+    player_t *player4;
 }vm_t;
 
 /*Function*/
@@ -40,6 +44,15 @@ typedef struct vm_s {
 /* memory */
 
 void free_vm(vm_t *vm);
+
+/* parsing */
+
 vm_t *parse_argument(char **av);
+
+player_t *find_player_name(vm_t *vm, char *name);
+
+/* error handling */
+
+int handle_vm(vm_t *vm, int argc);
 
 #endif /* !PROJECT_H_ */
