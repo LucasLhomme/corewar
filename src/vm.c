@@ -9,13 +9,12 @@
 
 static int attribute_playera(vm_t *vm, char **av, int i)
 {
-    for (int j = i; av[j] != NULL; j++) {
-        if (my_strcmp(av[j], vm->player1) == 0) {
-            vm->ad_player1 = my_strdup(av[i + 1]);
-            return 0;
-        }
-        if (my_strcmp(av[j], vm->player2) == 0) {
-            vm->ad_player2 = my_strdup(av[i + 1]);
+    player_t *player = NULL;
+
+    for (int j = i + 2; av[j] != NULL; j++) {
+        player = find_player_name(vm, av[j]);
+        if (player) {
+            player->ad_player = my_strdup(av[i + 1]);
             return 0;
         }
     }
@@ -24,13 +23,12 @@ static int attribute_playera(vm_t *vm, char **av, int i)
 
 static int attribute_playern(vm_t *vm, char **av, int i)
 {
-    for (int j = i; av[j] != NULL; j++) {
-        if (my_strcmp(av[j], vm->player1) == 0) {
-            vm->nb_player1 = my_atoi(av[i + 1]);
-            return 0;
-        }
-        if (my_strcmp(av[j], vm->player2) == 0) {
-            vm->nb_player2 = my_atoi(av[i + 1]);
+    player_t *player = NULL;
+
+    for (int j = i + 2; av[j] != NULL; j++) {
+        player = find_player_name(vm, av[j]);
+        if (player) {
+            player->nb_player = my_atoi(av[i + 1]);
             return 0;
         }
     }
@@ -72,18 +70,43 @@ static int find_flag(char **av, vm_t *vm, int i)
     return 0;
 }
 
-static int check_player(vm_t *vm, char **av, int i)
+static player_t *create_player(char *name)
 {
-    if (!vm->player2) {
-        vm->player2 = my_strdup(av[i]);
+    player_t *player = malloc(sizeof(player_t));
+
+    if (!player)
+        return NULL;
+    player->player_name = my_strdup(name);
+    player->nb_player = 0;
+    player->ad_player = NULL;
+    return player;
+}
+
+static int add_more_player(vm_t *vm, char *player_name)
+{
+    if (!vm->player3) {
+        vm->player3 = create_player(player_name);
         return 1;
-    } else {
-        if (my_strcmp(av[i], vm->player1) == 0 ||
-            my_strcmp(av[i], vm->player2) == 0)
-            return 1;
-        else
-            return 84;
+    } else if (!vm->player4) {
+        vm->player4 = create_player(player_name);
+        return 1;
+    } else
+        return 84;
+}
+
+static int add_player(vm_t *vm, char *player_name)
+{
+    if (!vm->player1) {
+        vm->player1 = create_player(player_name);
+        return 1;
+    } else if (!vm->player2) {
+        vm->player2 = create_player(player_name);
+        return 1;
     }
+    if (add_more_player(vm, player_name) == 1)
+        return 1;
+    else
+        return 84;
 }
 
 static int check_args(vm_t *vm, char **av, int i)
@@ -91,11 +114,8 @@ static int check_args(vm_t *vm, char **av, int i)
     if ((my_strcmp("-dump", av[i]) == 0) || (my_strcmp("-a", av[i]) == 0) ||
     (my_strcmp("-n", av[i]) == 0)) {
         return 2;
-    } else if (!vm->player1) {
-        vm->player1 = my_strdup(av[i]);
-        return 1;
     } else
-        return check_player(vm, av, i);
+        return add_player(vm, av[i]);
 }
 
 static int find_player(vm_t *vm, char **av)
@@ -118,7 +138,7 @@ static int find_player(vm_t *vm, char **av)
 vm_t *parse_argument(char **av)
 {
     vm_t *vm = calloc(1, sizeof(vm_t));
-    
+
     if (!vm)
         return NULL;
     if (find_player(vm, av) == 84) {
