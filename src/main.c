@@ -25,7 +25,7 @@ static void display_player_info(player_t *player, int num)
 {
     if (!player)
         return;
-    printf("P%d: name:%s, num:%d, addr:%s\n", num,
+    my_printf("P%d: name:%s, num:%d, addr:%s\n", num,
         player->player_name ? player->player_name : "NULL",
         player->nb_player,
         player->ad_player ? player->ad_player : "NULL");
@@ -48,7 +48,7 @@ int main(int argc, char **argv)
     display_player_info(vm->player2, 2);
     display_player_info(vm->player3, 3);
     display_player_info(vm->player4, 4);
-    printf("Dump cycle: %d\n", vm->nb_cycles);
+    my_printf("Dump cycle: %d\n", vm->nb_cycles);
     free_vm(vm);
     return 0;
 }
