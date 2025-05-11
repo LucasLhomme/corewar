@@ -30,7 +30,9 @@ int main(int argc, char **argv)
         return 0;
     }
     vm = parse_argument(argv);
-    if (vm != NULL)
+    if (vm == NULL)
         return 84;
+    printf("P1: name:%s, num:%d\nP2: name:%s, num:%d\n", vm->player1, vm->nb_player1, vm->player2, vm->nb_player2);
+    printf("%d\n", vm->nb_cycles);
     return 0;
 }
