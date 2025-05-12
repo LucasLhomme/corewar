@@ -9,8 +9,11 @@
 
 static int handle_player(player_t *player)
 {
-    if (my_strncmp("roc.", my_revstr(player->player_name), 4))
+    if (my_strncmp("roc.", my_revstr(player->player_name), 4)) {
+        my_revstr(player->player_name);
         return 84;
+    }
+    my_revstr(player->player_name);
     return 0;
 }
 

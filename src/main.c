@@ -25,15 +25,95 @@ static void display_player_info(player_t *player, int num)
 {
     if (!player)
         return;
-    my_printf("P%d: name:%s, num:%d, addr:%s\n", num,
+    my_printf("P%d: name: %s, num:%d, addr:%s\n", num,
         player->player_name ? player->player_name : "NULL",
         player->nb_player,
         player->ad_player ? player->ad_player : "NULL");
 }
 
+static void display_code(robot_t *robot)
+{
+    for (uint32_t i = 0; i < robot->code_size; i++) {
+        if (i % 16 == 0)
+            printf("%08x: ", i);
+        printf("%02x ", robot->code[i]);
+        if ((i + 1) % 16 == 0)
+            printf("\n");
+    }
+    if (robot->code_size % 16 != 0)
+        printf("\n");
+}
+
+static void display_robot(robot_t *robot, int num)
+{
+    printf("P%d:\nName    : %s\n", num, robot->name);
+    printf("Comment : %s\n", robot->comment);
+    printf("Code size: %u bytes\n", robot->code_size);
+    display_code(robot);
+}
+
+static void display_info(vm_t *vm, champions_t *champions, int val)
+{
+    if (val == 0) {
+        display_player_info(vm->player1, 1);
+        display_player_info(vm->player2, 2);
+        if (vm->player3)
+            display_player_info(vm->player3, 3);
+        if (vm->player4)
+            display_player_info(vm->player4, 4);
+    }
+    if (val == 1) {
+        display_robot(champions->champion1, 1);
+        display_robot(champions->champion2, 2);
+        if (vm->player3)
+            display_robot(champions->champion3, 3);
+        if (vm->player4)
+            display_robot(champions->champion4, 4);
+    }
+}
+
+static void initialize_champion(champions_t *champions, vm_t *vm)
+{
+    if (vm->player1)
+        champions->champion1 = malloc(sizeof(robot_t));
+    else
+        champions->champion1 = NULL;
+    if (vm->player2)
+        champions->champion2 = malloc(sizeof(robot_t));
+    else
+        champions->champion2 = NULL;
+    if (vm->player3)
+        champions->champion3 = malloc(sizeof(robot_t));
+    else
+        champions->champion3 = NULL;
+    if (vm->player4)
+        champions->champion4 = malloc(sizeof(robot_t));
+    else
+        champions->champion4 = NULL;
+}
+
+static champions_t *parse_champions(vm_t *vm)
+{
+    champions_t *champions = malloc(sizeof(champions_t));
+
+    initialize_champion(champions, vm);
+    if (parse_cor_file(vm->player1->player_name, champions->champion1) == 84)
+        return NULL;
+    if (parse_cor_file(vm->player2->player_name, champions->champion2) == 84)
+        return NULL;
+    if (vm->player3 &&
+        parse_cor_file(vm->player3->player_name, champions->champion3) == 84)
+        return NULL;
+    if (vm->player4 &&
+        parse_cor_file(vm->player4->player_name, champions->champion4) == 84)
+        return NULL;
+    return champions;
+}
+
 int main(int argc, char **argv)
 {
     vm_t *vm = NULL;
+    champions_t *champions = NULL;
 
     if (argc > 1 && my_strcmp(argv[1], "-h") == 0 && argc == 2) {
         handle_flagh();
@@ -44,11 +124,10 @@ int main(int argc, char **argv)
         return 84;
     if (handle_vm(vm, argc) == 84)
         return 84;
-    display_player_info(vm->player1, 1);
-    display_player_info(vm->player2, 2);
-    display_player_info(vm->player3, 3);
-    display_player_info(vm->player4, 4);
+    display_info(vm, champions, 0);
     my_printf("Dump cycle: %d\n", vm->nb_cycles);
-    free_vm(vm);
+    champions = parse_champions(vm);
+    display_info(vm, champions, 1);
     return 0;
+    free_vm(vm);
 }
