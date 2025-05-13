@@ -61,6 +61,8 @@ char *extract_str(char *str, char separator);
 char *extract_str_advanced(char *str, char separator1, char separator2);
 char **my_copy_word_in_array(char **tab);
 long int my_strtol(char *str);
+void *my_memset(void *s, int c, size_t n);
+void *my_calloc(size_t nitems, size_t size);
 
 // Fonctions utilitaires
 void my_swap(int *a, int *b);

@@ -61,6 +61,8 @@ LIB =	./my_compute_power_rec.c\
 	./my_puterror.c\
 	./my_strstr.c\
 	./my_strtol.c\
+	./my_calloc.c\
+	./my_memset.c\
 
 OBJ		=	$(LIB:.c=.o)
 
