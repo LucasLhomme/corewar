@@ -44,6 +44,8 @@ typedef struct player_s {
 
 typedef struct vm_s {
     int nb_cycles;
+    int nb_player;
+    uint8_t memory[MEM_SIZE];
     player_t *player1;
     player_t *player2;
     player_t *player3;
@@ -62,6 +64,8 @@ typedef struct champions_s {
 /* memory */
 
 void free_vm(vm_t *vm);
+
+void load_champions(vm_t *vm, champions_t *champions);
 
 /* parsing */
 

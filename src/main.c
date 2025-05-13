@@ -110,6 +110,16 @@ static champions_t *parse_champions(vm_t *vm)
     return champions;
 }
 
+static int count_player(vm_t *vm, champions_t *champions)
+{
+    if (vm->player3 && champions->champion3)
+        return 3;
+    if (vm->player4 && champions->champion4)
+        return 4;
+    return 2;
+}
+
+
 int main(int argc, char **argv)
 {
     vm_t *vm = NULL;
@@ -128,6 +138,8 @@ int main(int argc, char **argv)
     my_printf("Dump cycle: %d\n", vm->nb_cycles);
     champions = parse_champions(vm);
     display_info(vm, champions, 1);
+    vm->nb_player = count_player(vm, champions);
+    load_champions(vm, champions);
     return 0;
     free_vm(vm);
 }

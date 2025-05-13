@@ -15,6 +15,7 @@ SRC =	$(SRC_PATH)/main.c \
 		$(SRC_PATH)/utils.c \
 		$(SRC_PATH)/handle_error.c \
 		$(SRC_PATH)/parse_cor.c \
+		$(SRC_PATH)/load_arena.c \
 
 OBJ = $(SRC:.c=.o)
 LIBMY = lib/libmy.a
