@@ -11,7 +11,7 @@ long int my_strtol(char *str)
     int sign = 1;
 
     while (*str == ' ' || *str == '\t' || *str == '\n' ||
-           *str == '\v' || *str == '\f' || *str == '\r')
+        *str == '\v' || *str == '\f' || *str == '\r')
         str++;
     if (*str == '-' || *str == '+') {
         if (*str == '-')

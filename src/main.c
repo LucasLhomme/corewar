@@ -119,7 +119,6 @@ static int count_player(vm_t *vm, champions_t *champions)
     return 2;
 }
 
-
 int main(int argc, char **argv)
 {
     vm_t *vm = NULL;
