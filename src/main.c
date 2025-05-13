@@ -72,36 +72,6 @@ static void display_info(vm_t *vm, champions_t *champions, int val)
     }
 }
 
-static void display_memory(vm_t *vm)
-{
-    const int BYTES_PER_LINE = 32;
-    
-    if (!vm || !vm->memory)
-        return;
-    
-    printf("\n==== MEMORY DUMP ====\n");
-    
-    for (int i = 0; i < MEM_SIZE; i += BYTES_PER_LINE) {
-        // Afficher l'adresse en hexadécimal
-        printf("0x%04x: ", i);
-        
-        // Afficher les octets de la ligne courante
-        for (int j = 0; j < BYTES_PER_LINE && (i + j) < MEM_SIZE; j++) {
-            // Différentes couleurs possibles si vous voulez les ajouter plus tard
-            // par exemple pour différencier les champions
-            printf("%02x ", vm->memory[i + j]);
-            
-            // Ajouter un espace supplémentaire tous les 4 octets pour la lisibilité
-            if ((j + 1) % 4 == 0 && j < BYTES_PER_LINE - 1)
-                printf(" ");
-        }
-        
-        printf("\n");
-    }
-    
-    printf("====================\n");
-}
-
 static void initialize_champion(champions_t *champions, vm_t *vm)
 {
     if (vm->player1)
@@ -170,7 +140,6 @@ int main(int argc, char **argv)
     display_info(vm, champions, 1);
     vm->nb_player = count_player(vm, champions);
     load_champions(vm, champions);
-    display_memory(vm);
     return 0;
     free_vm(vm);
 }
