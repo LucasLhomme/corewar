@@ -136,9 +136,7 @@ int main(int argc, char **argv)
         return 0;
     }
     vm = parse_argument(argv);
-    if (vm == NULL)
-        return 84;
-    if (handle_vm(vm, argc) == 84)
+    if (vm == NULL || handle_vm(vm, argc) == 84)
         return 84;
     display_info(vm, champions, 0);
     champions = parse_champions(vm);
