@@ -7,9 +7,9 @@
 
 #ifndef PROJECT_H
     #define PROJECT_H
+    #define MAX_CHECKS 10
     #define PROG_NAME_LENGTH 128
     #define CHAMP_MAX_SIZE   682
-    #define COREWAR_EXEC_MAGIC 0xea83f3
     #include "my.h"
     #include "op.h"
     #include <stdio.h>
@@ -28,6 +28,25 @@
 
 /*Struct*/
 
+typedef struct process_s {
+    int player_id;
+    int pc;
+    int registers[REG_NUMBER];
+    int carry;
+    int wait_cycles;
+    int alive;
+    int last_live_cycle;
+    struct process_s *next;
+} process_t;
+
+typedef struct battle_s {
+    int cycle_count;
+    int cycle_to_die;
+    int check_count;
+    int live_count;
+    int last_live_player;
+    process_t *processes;
+} battle_t;
 
 typedef struct robot_s {
     char name[PROG_NAME_LENGTH + 1];
@@ -78,5 +97,15 @@ int parse_cor_file(const char *filename, robot_t *robot);
 /* error handling */
 
 int handle_vm(vm_t *vm, int argc);
+
+/* battle */
+
+int run_battle(vm_t *vm, champions_t *champions);
+
+void execute_cycle(vm_t *vm, battle_t *battle);
+
+void check_cycle_die(battle_t *battle, int *cycles_since_check);
+
+int check_dump_condition(vm_t *vm, battle_t *battle);
 
 #endif /* !PROJECT_H_ */

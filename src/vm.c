@@ -49,23 +49,18 @@ static int parse_flag(vm_t *vm, char **av, int i)
         else
             return 0;
     }
-    return 84;
+    return 0;
 }
 
 static int find_flag(char **av, vm_t *vm, int i)
 {
     if (my_strcmp(av[i], "-dump") == 0) {
-        if (vm->nb_cycles == 0) {
-            vm->nb_cycles = my_atoi(av[i + 1]);
-            return 0;
-        } else
-            return 84;
+        vm->nb_cycles = my_atoi(av[i + 1]);
+        return 0;
     }
     if (my_strcmp(av[i], "-a") == 0 || my_strcmp(av[i], "-n") == 0) {
         if (parse_flag(vm, av, i) == 84)
             return 84;
-        else
-            return 0;
     }
     return 0;
 }
@@ -141,6 +136,8 @@ vm_t *parse_argument(char **av)
 
     if (!vm)
         return NULL;
+    vm->nb_cycles = CYCLE_TO_DIE;
+    printf("%d\n", vm->nb_cycles);
     if (find_player(vm, av) == 84) {
         free_vm(vm);
         return NULL;

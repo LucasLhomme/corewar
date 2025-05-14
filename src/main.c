@@ -112,11 +112,18 @@ static champions_t *parse_champions(vm_t *vm)
 
 static int count_player(vm_t *vm, champions_t *champions)
 {
+    int count = 0;
+    
+    if (vm->player1 && champions->champion1)
+        count++;
+    if (vm->player2 && champions->champion2)
+        count++;
     if (vm->player3 && champions->champion3)
-        return 3;
+        count++;
     if (vm->player4 && champions->champion4)
-        return 4;
-    return 2;
+        count++;
+    
+    return count > 0 ? count : 0;
 }
 
 int main(int argc, char **argv)
@@ -139,6 +146,8 @@ int main(int argc, char **argv)
     display_info(vm, champions, 1);
     vm->nb_player = count_player(vm, champions);
     load_champions(vm, champions);
-    return 0;
+    if (run_battle(vm, champions))
+        return 84;
     free_vm(vm);
+    return 0;
 }
