@@ -26,6 +26,15 @@ static void display_live_message(vm_t *vm, int player_id)
         printf("The player %d(%s) is alive.\n", player_id, player_name);
 }
 
+static void update_values(vm_t *vm, int player_id, battle_t *battle,
+    process_t *process)
+{
+    display_live_message(vm, player_id);
+    battle->live_count++;
+    battle->last_live_player = player_id;
+    process->last_live_cycle = battle->cycle_count;
+}
+
 static void execute_live(vm_t *vm, process_t *process, battle_t *battle)
 {
     int player_id = (vm->memory[(process->pc + 1) % MEM_SIZE] << 24) |
@@ -33,7 +42,8 @@ static void execute_live(vm_t *vm, process_t *process, battle_t *battle)
                 (vm->memory[(process->pc + 3) % MEM_SIZE] << 8) |
                 (vm->memory[(process->pc + 4) % MEM_SIZE]);
     int valid_id = 0;
-    player_t *players[4] = {vm->player1, vm->player2, vm->player3, vm->player4};
+    player_t *players[4] = {vm->player1, vm->player2,
+        vm->player3, vm->player4};
 
     for (int i = 0; i < 4; i++) {
         if (!players[i])
@@ -44,12 +54,8 @@ static void execute_live(vm_t *vm, process_t *process, battle_t *battle)
             break;
         }
     }
-    if (valid_id) {
-        display_live_message(vm, player_id);
-        battle->live_count++;
-        battle->last_live_player = player_id;
-        process->last_live_cycle = battle->cycle_count;
-    }
+    if (valid_id)
+        update_values(vm, player_id, battle, process);
     process->pc = (process->pc + 5) % MEM_SIZE;
 }
 

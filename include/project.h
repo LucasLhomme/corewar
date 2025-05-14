@@ -84,6 +84,8 @@ typedef struct champions_s {
 
 void free_vm(vm_t *vm);
 
+void free_struct(vm_t *vm, champions_t *champions);
+
 void load_champions(vm_t *vm, champions_t *champions);
 
 /* parsing */
@@ -100,7 +102,7 @@ int handle_vm(vm_t *vm, int argc);
 
 /* battle */
 
-int run_battle(vm_t *vm, champions_t *champions);
+int run_battle(vm_t *vm);
 
 void execute_cycle(vm_t *vm, battle_t *battle);
 

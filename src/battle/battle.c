@@ -43,7 +43,7 @@ static process_t *create_process(player_t *player, int index, int segment_size)
     return new_process;
 }
 
-static process_t *initialize_processes(vm_t *vm, champions_t *champions)
+static process_t *initialize_processes(vm_t *vm)
 {
     process_t *head = NULL;
     process_t *new_process;
@@ -110,7 +110,7 @@ static void free_processes(process_t *processes)
     }
 }
 
-static battle_t *initialize_battle(vm_t *vm, champions_t *champions)
+static battle_t *initialize_battle(vm_t *vm)
 {
     battle_t *battle = malloc(sizeof(battle_t));
 
@@ -121,7 +121,7 @@ static battle_t *initialize_battle(vm_t *vm, champions_t *champions)
     battle->check_count = 0;
     battle->live_count = 0;
     battle->last_live_player = 0;
-    battle->processes = initialize_processes(vm, champions);
+    battle->processes = initialize_processes(vm);
     return battle;
 }
 
@@ -132,9 +132,9 @@ static void finalize_battle(vm_t *vm, battle_t *battle)
     free(battle);
 }
 
-int run_battle(vm_t *vm, champions_t *champions)
+int run_battle(vm_t *vm)
 {
-    battle_t *battle = initialize_battle(vm, champions);
+    battle_t *battle = initialize_battle(vm);
     int cycles_since_check = 0;
 
     if (!battle || !battle->processes) {
