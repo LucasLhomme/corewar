@@ -7,7 +7,7 @@
 
 #include "project.h"
 
-static void handle_flagh(void)
+void handle_flagh(void)
 {
     my_printf("USAGE:\n./corewar [-dump nbr_cycle] [[-n prog_number] [-a loa");
     my_printf("d_address] prog_name] ...\nDESCRIPTION\n-dump nbr_cycle dumps");
@@ -52,21 +52,25 @@ static void display_robot(robot_t *robot, int num)
     display_code(robot);
 }
 
-static void display_info(vm_t *vm, champions_t *champions)
+static void display_info(vm_t *vm, champions_t *champions, int val)
 {
-    display_player_info(vm->player1, 1);
-    display_robot(champions->champion1, 1);
-    display_player_info(vm->player2, 2);
-    display_robot(champions->champion2, 2);
-    if (vm->player3) {
-        display_player_info(vm->player3, 3);
-        display_robot(champions->champion3, 3);
+    if (val == 0) {
+        display_player_info(vm->player1, 1);
+        display_player_info(vm->player2, 2);
+        if (vm->player3)
+            display_player_info(vm->player3, 3);
+        if (vm->player4)
+            display_player_info(vm->player4, 4);
+        my_printf("Dump cycle: %d\n", vm->nb_cycles);
     }
-    if (vm->player4) {
-        display_player_info(vm->player4, 4);
-        display_robot(champions->champion4, 4);
+    if (val == 1) {
+        display_robot(champions->champion1, 1);
+        display_robot(champions->champion2, 2);
+        if (vm->player3)
+            display_robot(champions->champion3, 3);
+        if (vm->player4)
+            display_robot(champions->champion4, 4);
     }
-    my_printf("Dump cycle: %d\n", vm->nb_cycles);
 }
 
 static void initialize_champion(champions_t *champions, vm_t *vm)
@@ -122,21 +126,6 @@ static int count_player(vm_t *vm, champions_t *champions)
     return count > 0 ? count : 0;
 }
 
-static int parse_corewar(champions_t *champions, vm_t *vm, char **argv,
-    int argc)
-{
-    vm = parse_argument(argv);
-    if (!vm)
-        return 84;
-    if (handle_vm(vm, argc) == 84)
-        return 84;
-    champions = parse_champions(vm);
-    if (!champions)
-        return 84;
-    vm->nb_player = count_player(vm, champions);
-    return 0;
-}
-
 int main(int argc, char **argv)
 {
     vm_t *vm = NULL;
@@ -146,11 +135,15 @@ int main(int argc, char **argv)
         handle_flagh();
         return 0;
     }
-    if (parse_corewar(champions, vm, argv, argc) == 84)
+    vm = parse_argument(argv);
+    if (vm == NULL)
         return 84;
-    printf("end parsing\n");
-    display_info(vm, champions);
-    printf("end parsing\n");
+    if (handle_vm(vm, argc) == 84)
+        return 84;
+    display_info(vm, champions, 0);
+    champions = parse_champions(vm);
+    display_info(vm, champions, 1);
+    vm->nb_player = count_player(vm, champions);
     load_champions(vm, champions);
     if (run_battle(vm))
         return 84;
