@@ -55,7 +55,7 @@ static int check_player_number(vm_t *vm)
 
 int handle_vm(vm_t *vm, int argc)
 {
-    if (argc < 5)
+    if (argc < 3)
         return 84;
     if (handle_player(vm->player1) == 84 || handle_player(vm->player2) == 84)
         return 84;

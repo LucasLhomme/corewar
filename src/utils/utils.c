@@ -29,6 +29,26 @@ void free_vm(vm_t *vm)
     free(vm);
 }
 
+static void free_champions(champions_t *champions)
+{
+    if (champions->champion1)
+        free(champions->champion1);
+    if (champions->champion2)
+        free(champions->champion2);
+    if (champions->champion3)
+        free(champions->champion3);
+    if (champions->champion4)
+        free(champions->champion4);
+}
+
+void free_struct(vm_t *vm, champions_t *champions)
+{
+    if (vm)
+        free_vm(vm);
+    if (champions)
+        free_champions(champions);
+}
+
 player_t *find_player_name(vm_t *vm, char *name)
 {
     if (vm->player1 && vm->player1->player_name &&
