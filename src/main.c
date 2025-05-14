@@ -61,6 +61,7 @@ static void display_info(vm_t *vm, champions_t *champions, int val)
             display_player_info(vm->player3, 3);
         if (vm->player4)
             display_player_info(vm->player4, 4);
+        my_printf("Dump cycle: %d\n", vm->nb_cycles);
     }
     if (val == 1) {
         display_robot(champions->champion1, 1);
@@ -113,7 +114,7 @@ static champions_t *parse_champions(vm_t *vm)
 static int count_player(vm_t *vm, champions_t *champions)
 {
     int count = 0;
-    
+
     if (vm->player1 && champions->champion1)
         count++;
     if (vm->player2 && champions->champion2)
@@ -122,7 +123,6 @@ static int count_player(vm_t *vm, champions_t *champions)
         count++;
     if (vm->player4 && champions->champion4)
         count++;
-    
     return count > 0 ? count : 0;
 }
 
@@ -141,7 +141,6 @@ int main(int argc, char **argv)
     if (handle_vm(vm, argc) == 84)
         return 84;
     display_info(vm, champions, 0);
-    my_printf("Dump cycle: %d\n", vm->nb_cycles);
     champions = parse_champions(vm);
     display_info(vm, champions, 1);
     vm->nb_player = count_player(vm, champions);

@@ -127,8 +127,7 @@ static battle_t *initialize_battle(vm_t *vm, champions_t *champions)
 
 static void finalize_battle(vm_t *vm, battle_t *battle)
 {
-    if (battle->last_live_player > 0)
-        display_winner(vm, battle);
+    display_winner(vm, battle);
     free_processes(battle->processes);
     free(battle);
 }
