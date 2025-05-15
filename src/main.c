@@ -33,16 +33,16 @@ static void display_player_info(player_t *player, int num)
 
 static void display_robot(robot_t *robot, int num)
 {
-    my_printf("\nPlayer %d:\nName: %s\n", num, robot->name);
+    printf("\nPlayer %d:\nName: %s\n", num, robot->name);
     for (uint32_t i = 0; i < robot->code_size; i++) {
-        if (i % 8 == 0)
-            print_address_hex(i);
-        print_mem2(robot->code[i]);
-        if ((i + 1) % 8 == 0)
-            my_putchar('\n');
+        if (i % 16 == 0)
+            printf("%08x: ", i);
+        printf("%02x ", robot->code[i]);
+        if ((i + 1) % 16 == 0)
+            printf("\n");
     }
-    if (robot->code_size % 8 != 0)
-        my_putchar('\n');
+    if (robot->code_size % 16 != 0)
+        printf("\n");
 }
 
 static void display_info(vm_t *vm, champions_t *champions, int val)
@@ -89,6 +89,18 @@ static void initialize_champion(champions_t *champions, vm_t *vm)
         champions->champion4 = NULL;
 }
 
+static int parse_champion(player_t *player, robot_t *champion,
+    vm_t *vm, champions_t *champions)
+{
+    if (!player || !champion)
+        return 0;
+    if (parse_cor_file(player->player_name, champion) == 84) {
+        free_struct(vm, champions);
+        return 84;
+    }
+    return 0;
+}
+
 static champions_t *parse_champions(vm_t *vm)
 {
     champions_t *champions = malloc(sizeof(champions_t));
@@ -96,26 +108,18 @@ static champions_t *parse_champions(vm_t *vm)
     if (!champions)
         return NULL;
     initialize_champion(champions, vm);
-    if (vm->player1 && champions->champion1 &&
-        parse_cor_file(vm->player1->player_name, champions->champion1) == 84) {
-        free_struct(vm, champions);
+    if (parse_champion(vm->player1, champions->champion1, vm,
+        champions) == 84)
         return NULL;
-    }
-    if (vm->player2 && champions->champion2 &&
-        parse_cor_file(vm->player2->player_name, champions->champion2) == 84) {
-        free_struct(vm, champions);
+    if (parse_champion(vm->player2, champions->champion2,
+        vm, champions) == 84)
         return NULL;
-    }
-    if (vm->player3 && champions->champion3 &&
-        parse_cor_file(vm->player3->player_name, champions->champion3) == 84) {
-        free_struct(vm, champions);
+    if (parse_champion(vm->player3, champions->champion3, vm,
+        champions) == 84)
         return NULL;
-    }
-    if (vm->player4 && champions->champion4 &&
-        parse_cor_file(vm->player4->player_name, champions->champion4) == 84) {
-        free_struct(vm, champions);
+    if (parse_champion(vm->player4, champions->champion4, vm,
+        champions) == 84)
         return NULL;
-    }
     return champions;
 }
 
