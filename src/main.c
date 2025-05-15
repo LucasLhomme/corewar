@@ -34,21 +34,21 @@ static void display_player_info(player_t *player, int num)
 static void display_code(robot_t *robot)
 {
     for (uint32_t i = 0; i < robot->code_size; i++) {
-        if (i % 16 == 0)
-            printf("%08x: ", i);
-        printf("%02x ", robot->code[i]);
-        if ((i + 1) % 16 == 0)
-            printf("\n");
+        if (i % 8 == 0)
+            print_address_hex(i);
+        print_mem2(robot->code[i]);
+        if ((i + 1) % 8 == 0)
+            my_putchar('\n');
     }
-    if (robot->code_size % 16 != 0)
-        printf("\n");
+    if (robot->code_size % 8 != 0)
+        my_putchar('\n');
 }
 
 static void display_robot(robot_t *robot, int num)
 {
-    printf("P%d:\nName    : %s\n", num, robot->name);
-    printf("Comment : %s\n", robot->comment);
-    printf("Code size: %u bytes\n", robot->code_size);
+    my_printf("P%d:\nName    : %s\n", num, robot->name);
+    my_printf("Comment : %s\n", robot->comment);
+    my_printf("Code size: %u bytes\n", robot->code_size);
     display_code(robot);
 }
 
@@ -102,10 +102,10 @@ static champions_t *parse_champions(vm_t *vm)
     if (!champions)
         return NULL;
     initialize_champion(champions, vm);
-    if (vm->player1 && champions->champion1 && 
+    if (vm->player1 && champions->champion1 &&
         parse_cor_file(vm->player1->player_name, champions->champion1) == 84)
         return NULL;
-    if (vm->player2 && champions->champion2 && 
+    if (vm->player2 && champions->champion2 &&
         parse_cor_file(vm->player2->player_name, champions->champion2) == 84)
         return NULL;
     if (vm->player3 && champions->champion3 &&
@@ -120,7 +120,7 @@ static champions_t *parse_champions(vm_t *vm)
 static int count_player(vm_t *vm, champions_t *champions)
 {
     int count = 0;
-    
+
     if (!champions)
         return 0;
     if (vm->player1 && champions->champion1)

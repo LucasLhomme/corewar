@@ -110,4 +110,12 @@ void check_cycle_die(battle_t *battle, int *cycles_since_check);
 
 int check_dump_condition(vm_t *vm, battle_t *battle);
 
+/*print mem*/
+void print_address_hex(size_t address);
+void print_mem2(int value);
+void print_mem8(int value);
+void print_mem16(int value);
+void print_memory_hex_2(unsigned char *data, size_t size);
+void print_memory_hex_8(unsigned char *data, size_t size);
+void print_memory_hex_16(unsigned char *data, size_t size);
 #endif /* !PROJECT_H_ */
