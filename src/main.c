@@ -102,10 +102,10 @@ static champions_t *parse_champions(vm_t *vm)
     if (!champions)
         return NULL;
     initialize_champion(champions, vm);
-    if (vm->player1 && champions->champion1 && 
+    if (vm->player1 && champions->champion1 &&
         parse_cor_file(vm->player1->player_name, champions->champion1) == 84)
         return NULL;
-    if (vm->player2 && champions->champion2 && 
+    if (vm->player2 && champions->champion2 &&
         parse_cor_file(vm->player2->player_name, champions->champion2) == 84)
         return NULL;
     if (vm->player3 && champions->champion3 &&
@@ -120,7 +120,7 @@ static champions_t *parse_champions(vm_t *vm)
 static int count_player(vm_t *vm, champions_t *champions)
 {
     int count = 0;
-    
+
     if (!champions)
         return 0;
     if (vm->player1 && champions->champion1)

@@ -39,6 +39,7 @@ static void free_champions(champions_t *champions)
         free(champions->champion3);
     if (champions->champion4)
         free(champions->champion4);
+    free(champions);
 }
 
 void free_struct(vm_t *vm, champions_t *champions)

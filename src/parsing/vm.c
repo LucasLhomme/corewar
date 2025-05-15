@@ -136,7 +136,7 @@ vm_t *parse_argument(char **av)
 
     if (!vm)
         return NULL;
-    vm->nb_cycles = CYCLE_TO_DIE;
+    vm->nb_cycles = 0;
     if (find_player(vm, av) == 84) {
         free_vm(vm);
         return NULL;
