@@ -31,8 +31,9 @@ static void display_player_info(player_t *player, int num)
         player->ad_player ? player->ad_player : "NULL");
 }
 
-static void display_code(robot_t *robot)
+static void display_robot(robot_t *robot, int num)
 {
+    printf("\nPlayer %d:\nName: %s\n", num, robot->name);
     for (uint32_t i = 0; i < robot->code_size; i++) {
         if (i % 16 == 0)
             printf("%08x: ", i);
@@ -44,14 +45,6 @@ static void display_code(robot_t *robot)
         printf("\n");
 }
 
-static void display_robot(robot_t *robot, int num)
-{
-    printf("P%d:\nName    : %s\n", num, robot->name);
-    printf("Comment : %s\n", robot->comment);
-    printf("Code size: %u bytes\n", robot->code_size);
-    display_code(robot);
-}
-
 static void display_info(vm_t *vm, champions_t *champions, int val)
 {
     if (val == 0) {
@@ -61,7 +54,7 @@ static void display_info(vm_t *vm, champions_t *champions, int val)
             display_player_info(vm->player3, 3);
         if (vm->player4)
             display_player_info(vm->player4, 4);
-        my_printf("Dump cycle: %d\n", vm->nb_cycles);
+        my_printf("Dump cycle: %d", vm->nb_cycles);
     }
     if (val == 1 && champions) {
         if (champions->champion1)
@@ -73,6 +66,7 @@ static void display_info(vm_t *vm, champions_t *champions, int val)
         if (vm->player4 && champions->champion4)
             display_robot(champions->champion4, 4);
     }
+    my_printf("\n");
 }
 
 static void initialize_champion(champions_t *champions, vm_t *vm)

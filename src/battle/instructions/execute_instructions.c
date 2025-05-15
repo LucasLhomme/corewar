@@ -23,7 +23,7 @@ static void display_live_message(vm_t *vm, int player_id)
         }
     }
     if (player_name)
-        printf("The player %d(%s) is alive.\n", player_id, player_name);
+        my_printf("The player %d(%s) is alive.\n", player_id, player_name);
 }
 
 static void update_values(vm_t *vm, int player_id, battle_t *battle,

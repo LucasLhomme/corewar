@@ -25,8 +25,8 @@ int check_dump_condition(vm_t *vm, battle_t *battle)
     if (vm->nb_cycles > 0 && battle->cycle_count > 0 && 
         (battle->cycle_count % vm->nb_cycles) == 0) {
         dump_memory(vm);
-        printf("\n\n");
-        return 1;
+        my_printf("\n\n");
+        return 0;
     }
     return 0;
 }
