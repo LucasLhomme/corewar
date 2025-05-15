@@ -8,11 +8,24 @@
 # Variables
 NAME = corewar
 CFLAGS = -I./include -I ./B-CPE-200_op/
-FLAGS = -Wall -Wextra -W
+FLAGS = -Wall -Wextra -W -g
 SRC_PATH = ./src
+UTILS_PATH = ./src/utils
+PARSING_PATH = ./src/parsing
+BATTLE_PATH = ./src/battle
+INSTR_PATH = ./src/battle/instructions
+
 SRC =	$(SRC_PATH)/main.c \
-		$(SRC_PATH)/vm.c \
-		$(SRC_PATH)/utils.c \
+		$(SRC_PATH)/op.c \
+		$(UTILS_PATH)/utils.c \
+		$(UTILS_PATH)/handle_error.c \
+		$(PARSING_PATH)/vm.c \
+		$(PARSING_PATH)/parse_cor.c \
+		$(BATTLE_PATH)/load_arena.c \
+		$(BATTLE_PATH)/battle.c \
+		$(BATTLE_PATH)/cycle_die.c \
+		$(BATTLE_PATH)/dump.c \
+		$(INSTR_PATH)/execute_instructions.c \
 
 OBJ = $(SRC:.c=.o)
 LIBMY = lib/libmy.a
