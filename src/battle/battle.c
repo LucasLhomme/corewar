@@ -49,8 +49,11 @@ static process_t *initialize_processes(vm_t *vm)
     process_t *new_process;
     player_t *players[4] = {vm->player1, vm->player2,
         vm->player3, vm->player4};
-    int segment_size = MEM_SIZE / vm->nb_player;
+    int segment_size;
 
+    if (vm->nb_player <= 0)
+        return NULL;
+    segment_size = MEM_SIZE / vm->nb_player;
     for (int i = 0; i < 4; i++) {
         if (!players[i])
             continue;

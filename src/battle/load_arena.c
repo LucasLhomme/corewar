@@ -35,6 +35,8 @@ static void load_champion_memory(vm_t *vm, robot_t *robot, int load_address)
 
 void load_champions(vm_t *vm, champions_t *champions)
 {
+    if (!vm || !champions)
+        return;
     player_t *players[4] = { vm->player1, vm->player2, vm->player3,
         vm->player4 };
     robot_t *robots[4] = { champions->champion1, champions->champion2,

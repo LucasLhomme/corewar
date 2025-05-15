@@ -8,7 +8,7 @@
 # Variables
 NAME = corewar
 CFLAGS = -I./include -I ./B-CPE-200_op/
-FLAGS = -Wall -Wextra -W
+FLAGS = -Wall -Wextra -W -g
 SRC_PATH = ./src
 UTILS_PATH = ./src/utils
 PARSING_PATH = ./src/parsing

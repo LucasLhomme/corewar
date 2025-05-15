@@ -63,12 +63,14 @@ static void display_info(vm_t *vm, champions_t *champions, int val)
             display_player_info(vm->player4, 4);
         my_printf("Dump cycle: %d\n", vm->nb_cycles);
     }
-    if (val == 1) {
-        display_robot(champions->champion1, 1);
-        display_robot(champions->champion2, 2);
-        if (vm->player3)
+    if (val == 1 && champions) {
+        if (champions->champion1)
+            display_robot(champions->champion1, 1);
+        if (champions->champion2)
+            display_robot(champions->champion2, 2);
+        if (vm->player3 && champions->champion3)
             display_robot(champions->champion3, 3);
-        if (vm->player4)
+        if (vm->player4 && champions->champion4)
             display_robot(champions->champion4, 4);
     }
 }
@@ -97,15 +99,19 @@ static champions_t *parse_champions(vm_t *vm)
 {
     champions_t *champions = malloc(sizeof(champions_t));
 
+    if (!champions)
+        return NULL;
     initialize_champion(champions, vm);
-    if (parse_cor_file(vm->player1->player_name, champions->champion1) == 84)
+    if (vm->player1 && champions->champion1 && 
+        parse_cor_file(vm->player1->player_name, champions->champion1) == 84)
         return NULL;
-    if (parse_cor_file(vm->player2->player_name, champions->champion2) == 84)
+    if (vm->player2 && champions->champion2 && 
+        parse_cor_file(vm->player2->player_name, champions->champion2) == 84)
         return NULL;
-    if (vm->player3 &&
+    if (vm->player3 && champions->champion3 &&
         parse_cor_file(vm->player3->player_name, champions->champion3) == 84)
         return NULL;
-    if (vm->player4 &&
+    if (vm->player4 && champions->champion4 &&
         parse_cor_file(vm->player4->player_name, champions->champion4) == 84)
         return NULL;
     return champions;
@@ -114,7 +120,9 @@ static champions_t *parse_champions(vm_t *vm)
 static int count_player(vm_t *vm, champions_t *champions)
 {
     int count = 0;
-
+    
+    if (!champions)
+        return 0;
     if (vm->player1 && champions->champion1)
         count++;
     if (vm->player2 && champions->champion2)
