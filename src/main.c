@@ -33,7 +33,7 @@ static void display_player_info(player_t *player, int num)
 
 static void display_robot(robot_t *robot, int num)
 {
-    printf("\nPlayer %d:\nName: %s\n", num, robot->name);
+    my_printf("\nPlayer %d:\nName: %s\n", num, robot->name);
     for (uint32_t i = 0; i < robot->code_size; i++) {
         if (i % 8 == 0)
             print_address_hex(i);
