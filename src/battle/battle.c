@@ -19,10 +19,10 @@ static int calculate_laddress(player_t *player, int index,
 {
     int load_address;
 
-    if (player->ad_player)
-        load_address = (int)my_strtol(player->ad_player) % MEM_SIZE;
-    else
+    if (!player->ad_player)
         load_address = (index * segment_size) % MEM_SIZE;
+    else
+        load_address = (int)my_strtol(player->ad_player) % MEM_SIZE;
     return load_address;
 }
 
@@ -66,7 +66,7 @@ static process_t *initialize_processes(vm_t *vm)
     return head;
 }
 
-static int is_battle_over(battle_t *battle, vm_t *vm)
+static int is_battle_over(battle_t *battle)
 {
     process_t *current = battle->processes;
     int alive_processes = 0;
@@ -76,7 +76,7 @@ static int is_battle_over(battle_t *battle, vm_t *vm)
             alive_processes++;
         current = current->next;
     }
-    return alive_processes == 0 || battle->cycle_count >= vm->nb_cycles;
+    return alive_processes == 0;
 }
 
 static void display_winner(vm_t *vm, battle_t *battle)
@@ -96,9 +96,9 @@ static void display_winner(vm_t *vm, battle_t *battle)
         }
     }
     if (player_name)
-        printf("The player %d(%s) has won.\n", winner_id, player_name);
+        my_printf("The player %d(%s) has won.\n", winner_id, player_name);
     else
-        printf("No winner\n");
+        my_printf("No winner\n");
 }
 
 static void free_processes(process_t *processes)
@@ -144,7 +144,7 @@ int run_battle(vm_t *vm)
         free(battle);
         return 84;
     }
-    while (!is_battle_over(battle, vm)) {
+    while (!is_battle_over(battle)) {
         execute_cycle(vm, battle);
         check_cycle_die(battle, &cycles_since_check);
         if (check_dump_condition(vm, battle))

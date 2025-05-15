@@ -68,12 +68,14 @@ static int find_flag(char **av, vm_t *vm, int i)
 static player_t *create_player(char *name)
 {
     player_t *player = malloc(sizeof(player_t));
+    static int number = 1;
 
     if (!player)
         return NULL;
     player->player_name = my_strdup(name);
-    player->nb_player = 0;
+    player->nb_player = number;
     player->ad_player = NULL;
+    number++;
     return player;
 }
 
@@ -132,11 +134,11 @@ static int find_player(vm_t *vm, char **av)
 
 vm_t *parse_argument(char **av)
 {
-    vm_t *vm = calloc(1, sizeof(vm_t));
+    vm_t *vm = my_calloc(1, sizeof(vm_t));
 
     if (!vm)
         return NULL;
-    vm->nb_cycles = CYCLE_TO_DIE;
+    vm->nb_cycles = 0;
     if (find_player(vm, av) == 84) {
         free_vm(vm);
         return NULL;
