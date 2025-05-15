@@ -31,6 +31,8 @@ void free_vm(vm_t *vm)
 
 static void free_champions(champions_t *champions)
 {
+    if (!champions)
+        return;
     if (champions->champion1)
         free(champions->champion1);
     if (champions->champion2)

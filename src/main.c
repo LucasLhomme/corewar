@@ -97,17 +97,25 @@ static champions_t *parse_champions(vm_t *vm)
         return NULL;
     initialize_champion(champions, vm);
     if (vm->player1 && champions->champion1 &&
-        parse_cor_file(vm->player1->player_name, champions->champion1) == 84)
+        parse_cor_file(vm->player1->player_name, champions->champion1) == 84) {
+        free_struct(vm, champions);
         return NULL;
+    }
     if (vm->player2 && champions->champion2 &&
-        parse_cor_file(vm->player2->player_name, champions->champion2) == 84)
+        parse_cor_file(vm->player2->player_name, champions->champion2) == 84) {
+        free_struct(vm, champions);
         return NULL;
+    }
     if (vm->player3 && champions->champion3 &&
-        parse_cor_file(vm->player3->player_name, champions->champion3) == 84)
+        parse_cor_file(vm->player3->player_name, champions->champion3) == 84) {
+        free_struct(vm, champions);
         return NULL;
+    }
     if (vm->player4 && champions->champion4 &&
-        parse_cor_file(vm->player4->player_name, champions->champion4) == 84)
+        parse_cor_file(vm->player4->player_name, champions->champion4) == 84) {
+        free_struct(vm, champions);
         return NULL;
+    }
     return champions;
 }
 

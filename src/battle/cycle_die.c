@@ -39,9 +39,11 @@ static void check_processes(battle_t *battle)
         if (current->alive == 0) {
             update_linked(battle, next, prev);
             free(current);
-        } else
+            current = next;
+        } else {
             prev = current;
-        current = next;
+            current = next;
+        }
     }
 }
 

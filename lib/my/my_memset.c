@@ -9,12 +9,12 @@
 
 void *my_memset(void *s, int c, size_t n)
 {
-    int i = 0;
+    size_t i = 0;
     unsigned char *ptr = s;
 
-    while (n) {
+    while (i < n) {
         ptr[i] = (unsigned char)c;
-        n--;
+        i++;
     }
     return s;
 }

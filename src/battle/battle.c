@@ -19,10 +19,10 @@ static int calculate_laddress(player_t *player, int index,
 {
     int load_address;
 
-    if (player->ad_player)
-        load_address = (int)my_strtol(player->ad_player) % MEM_SIZE;
-    else
+    if (!player->ad_player)
         load_address = (index * segment_size) % MEM_SIZE;
+    else
+        load_address = (int)my_strtol(player->ad_player) % MEM_SIZE;
     return load_address;
 }
 

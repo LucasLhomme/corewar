@@ -12,7 +12,7 @@ static int calculate_load_address(player_t *player, int current_index,
 {
     int load_address = 0;
 
-    if (player->ad_player == NULL)
+    if (!player->ad_player)
         load_address = current_index * segment_size;
     else
         load_address = (int)my_strtol(player->ad_player);
