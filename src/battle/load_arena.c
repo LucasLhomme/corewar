@@ -33,19 +33,32 @@ static void load_champion_memory(vm_t *vm, robot_t *robot, int load_address)
     }
 }
 
-void load_champions(vm_t *vm, champions_t *champions)
+static void initialize_structure(vm_t *vm, champions_t *champions,
+    player_t **players, robot_t **robots)
 {
     if (!vm || !champions)
         return;
-    player_t *players[4] = { vm->player1, vm->player2, vm->player3,
-        vm->player4 };
-    robot_t *robots[4] = { champions->champion1, champions->champion2,
-        champions->champion3, champions->champion4 };
-    int num_players = vm->nb_player;
+    players[0] = vm->player1;
+    players[1] = vm->player2;
+    players[2] = vm->player3;
+    players[3] = vm->player4;
+    robots[0] = champions->champion1;
+    robots[1] = champions->champion2;
+    robots[2] = champions->champion3;
+    robots[3] = champions->champion4;
+}
+
+void load_champions(vm_t *vm, champions_t *champions)
+{
+    player_t *players[4] = {NULL, NULL, NULL, NULL};
+    robot_t *robots[4] = {NULL, NULL, NULL, NULL};
+    int num_players = 0;
     int current_player_index = 0;
     int segment_size = 0;
     int load_address = 0;
 
+    initialize_structure(vm, champions, players, robots);
+    num_players = vm->nb_player;
     if (num_players == 0)
         return;
     segment_size = MEM_SIZE / num_players;
