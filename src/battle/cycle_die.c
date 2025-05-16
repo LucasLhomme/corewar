@@ -10,13 +10,20 @@
 static void update_live(battle_t *battle)
 {
     process_t *current = battle->processes;
+    int all_dead = 1;
 
     while (current) {
         if (current->alive && (battle->cycle_count - current->last_live_cycle)
         >= battle->cycle_to_die) {
             current->alive = 0;
-        }
+        } else if (current->alive)
+            all_dead = 0;
         current = current->next;
+    }
+    if (all_dead && battle->last_live_player == 0) {
+        current = battle->processes;
+        if (current)
+            battle->last_live_player = current->player_id;
     }
 }
 

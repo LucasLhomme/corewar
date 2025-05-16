@@ -38,6 +38,8 @@ int my_put_nbr(int nb);
 void my_putchar(char c);
 void my_putstr(char const *str);
 void my_puterror(char const *str);
+void print_mem2(int value);
+void print_memory_hex(unsigned char *data, size_t size);
 
 // Fonctions de manipulation de chaînes
 char *my_revstr(char *str);

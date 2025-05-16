@@ -5,6 +5,7 @@
 ** dump
 */
 
+#include "my.h"
 #include "project.h"
 
 static void dump_memory(vm_t *vm)
@@ -12,11 +13,11 @@ static void dump_memory(vm_t *vm)
     const int BYTES_PER_LINE = 32;
 
     for (int i = 0; i < MEM_SIZE; i += BYTES_PER_LINE) {
-        printf("%08x : ", i);
+        print_address_hex(i);
         for (int j = 0; j < BYTES_PER_LINE && (i + j) < MEM_SIZE; j++) {
-            printf("%02x ", vm->memory[i + j]);
+            print_mem8(vm->memory[i + j]);
         }
-        printf("\n");
+        my_putchar('\n');
     }
 }
 

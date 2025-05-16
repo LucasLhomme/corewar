@@ -19,6 +19,9 @@ SRC =	$(SRC_PATH)/main.c \
 		$(SRC_PATH)/op.c \
 		$(UTILS_PATH)/utils.c \
 		$(UTILS_PATH)/handle_error.c \
+		$(UTILS_PATH)/print_mem2.c \
+		$(UTILS_PATH)/print_mem8.c \
+		$(UTILS_PATH)/print_mem16.c \
 		$(PARSING_PATH)/vm.c \
 		$(PARSING_PATH)/parse_cor.c \
 		$(BATTLE_PATH)/load_arena.c \
@@ -26,6 +29,7 @@ SRC =	$(SRC_PATH)/main.c \
 		$(BATTLE_PATH)/cycle_die.c \
 		$(BATTLE_PATH)/dump.c \
 		$(INSTR_PATH)/execute_instructions.c \
+		$(INSTR_PATH)/instructions.c \
 
 OBJ = $(SRC:.c=.o)
 LIBMY = lib/libmy.a
