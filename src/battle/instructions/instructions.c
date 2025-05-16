@@ -53,7 +53,7 @@ void execute_sub(vm_t *vm, process_t *process, battle_t *battle)
     process->pc = (process->pc + 5) % MEM_SIZE;
 }
 
-static void store_register(vm_t *vm, process_t *process, int reg_src,
+static void store_register(process_t *process, int reg_src,
     int reg_dest)
 {
     if (reg_dest >= 1 && reg_dest <= REG_NUMBER)
@@ -90,7 +90,7 @@ void execute_st(vm_t *vm, process_t *process, battle_t *battle)
     }
     param_type = (vm->memory[(process->pc + 1) % MEM_SIZE] >> 4) & 0x03;
     if (param_type == 1)
-        store_register(vm, process, reg_src,
+        store_register(process, reg_src,
             vm->memory[(process->pc + 3) % MEM_SIZE]);
     else if (param_type == 3)
         store_memory(vm, process, reg_src);
