@@ -32,8 +32,8 @@ void print_mem8(int value)
     char *base = "0123456789abcdef";
     char result[3];
 
-    result[0] = base[(value / 16) % 16];
-    result[1] = base[value % 16];
+    result[0] = base[(value / 8) % 8];
+    result[1] = base[value % 8];
     result[2] = '\0';
     my_putstr(result);
     my_putchar(' ');

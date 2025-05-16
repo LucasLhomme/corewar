@@ -5,6 +5,7 @@
 ** main file
 */
 
+#include "my.h"
 #include "project.h"
 
 void handle_flagh(void)
@@ -33,16 +34,16 @@ static void display_player_info(player_t *player, int num)
 
 static void display_robot(robot_t *robot, int num)
 {
-    printf("\nPlayer %d:\nName: %s\n", num, robot->name);
+    my_printf("\nPlayer %d:\nName: %s\n", num, robot->name);
     for (uint32_t i = 0; i < robot->code_size; i++) {
         if (i % 16 == 0)
-            printf("%08x: ", i);
-        printf("%02x ", robot->code[i]);
+            print_mem8(i);
+        print_mem2(robot->code[i]);
         if ((i + 1) % 16 == 0)
-            printf("\n");
+            my_putchar('\n');
     }
     if (robot->code_size % 16 != 0)
-        printf("\n");
+        my_putchar('\n');
 }
 
 static void display_info(vm_t *vm, champions_t *champions, int val)
