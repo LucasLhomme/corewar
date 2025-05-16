@@ -8,6 +8,7 @@
 #include "project.h"
 
 static const instruction_handler_t instruction_handlers[17] = {
+    NULL,
     execute_live,
     execute_st,
     execute_add,
