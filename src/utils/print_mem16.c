@@ -6,7 +6,19 @@
 */
 
 #include <stdarg.h>
-#include "my.h"
+#include "project.h"
+
+void print_mem16(int value)
+{
+    char *base = "0123456789abcdef";
+    char result[3];
+
+    result[0] = base[(value / 16) % 16];
+    result[1] = base[value % 16];
+    result[2] = '\0';
+    my_putstr(result);
+    my_putchar(' ');
+}
 
 void print_memory_hex_16(unsigned char *data, size_t size)
 {
@@ -19,16 +31,4 @@ void print_memory_hex_16(unsigned char *data, size_t size)
         }
         my_putchar('\n');
     }
-}
-
-void print_mem16(int value)
-{
-    char *base = "0123456789abcdef";
-    char result[3];
-
-    result[0] = base[(value / 16) % 16];
-    result[1] = base[value % 16];
-    result[2] = '\0';
-    my_putstr(result);
-    my_putchar(' ');
 }

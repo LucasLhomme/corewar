@@ -9,7 +9,6 @@
 
 void execute_zjmp(vm_t *vm, process_t *process, battle_t *battle)
 {
-    printf("coucou\n");
     int index = (vm->memory[(process->pc + 1) % MEM_SIZE] << 8) |
         (vm->memory[(process->pc + 2) % MEM_SIZE]);
 
@@ -30,7 +29,8 @@ void execute_add(vm_t *vm, process_t *process, battle_t *battle)
     if (reg1 >= 1 && reg1 <= REG_NUMBER &&
         reg2 >= 1 && reg2 <= REG_NUMBER &&
         reg3 >= 1 && reg3 <= REG_NUMBER) {
-        process->registers[reg3 - 1] = process->registers[reg1 - 1] + process->registers[reg2 - 1];
+        process->registers[reg3 - 1] = process->registers[reg1 - 1] +
+        process->registers[reg2 - 1];
         process->carry = (process->registers[reg3 - 1] == 0) ? 1 : 0;
     }
     process->pc = (process->pc + 5) % MEM_SIZE;
@@ -46,7 +46,8 @@ void execute_sub(vm_t *vm, process_t *process, battle_t *battle)
     if (reg1 >= 1 && reg1 <= REG_NUMBER &&
         reg2 >= 1 && reg2 <= REG_NUMBER &&
         reg3 >= 1 && reg3 <= REG_NUMBER) {
-        process->registers[reg3 - 1] = process->registers[reg1 - 1] - process->registers[reg2 - 1];
+        process->registers[reg3 - 1] = process->registers[reg1 - 1] -
+        process->registers[reg2 - 1];
         process->carry = (process->registers[reg3 - 1] == 0) ? 1 : 0;
     }
     process->pc = (process->pc + 5) % MEM_SIZE;
@@ -54,7 +55,8 @@ void execute_sub(vm_t *vm, process_t *process, battle_t *battle)
 
 void execute_st(vm_t *vm, process_t *process, battle_t *battle)
 {
-    int reg_src, param2;
+    int reg_src;
+    int param2;
     int address = 0;
     int ind_value = 0;
 
@@ -74,9 +76,12 @@ void execute_st(vm_t *vm, process_t *process, battle_t *battle)
             (vm->memory[(process->pc + 4) % MEM_SIZE]);
         address = (process->pc + (ind_value % IDX_MOD)) % MEM_SIZE;
         vm->memory[address] = (process->registers[reg_src - 1] >> 24) & 0xFF;
-        vm->memory[(address + 1) % MEM_SIZE] = (process->registers[reg_src - 1] >> 16) & 0xFF;
-        vm->memory[(address + 2) % MEM_SIZE] = (process->registers[reg_src - 1] >> 8) & 0xFF;
-        vm->memory[(address + 3) % MEM_SIZE] = process->registers[reg_src - 1] & 0xFF;
+        vm->memory[(address + 1) % MEM_SIZE] = (process->registers[reg_src - 1]
+        >> 16) & 0xFF;
+        vm->memory[(address + 2) % MEM_SIZE] = (process->registers[reg_src - 1]
+        >> 8) & 0xFF;
+        vm->memory[(address + 3) % MEM_SIZE] = process->registers[reg_src - 1]
+        & 0xFF;
         process->pc = (process->pc + 5) % MEM_SIZE;
     } else
         process->pc = (process->pc + 5) % MEM_SIZE;
