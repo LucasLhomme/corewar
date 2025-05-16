@@ -28,6 +28,7 @@ SRC =	$(SRC_PATH)/main.c \
 		$(BATTLE_PATH)/cycle_die.c \
 		$(BATTLE_PATH)/dump.c \
 		$(INSTR_PATH)/execute_instructions.c \
+		$(INSTR_PATH)/instructions.c \
 
 OBJ = $(SRC:.c=.o)
 LIBMY = lib/libmy.a

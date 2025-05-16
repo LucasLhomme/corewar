@@ -7,58 +7,6 @@
 
 #include "project.h"
 
-static void display_live_message(vm_t *vm, int player_id)
-{
-    player_t *players[4] = {vm->player1, vm->player2, vm->player3,
-        vm->player4};
-    char *player_name = NULL;
-
-    for (int i = 0; i < 4; i++) {
-        if (!players[i])
-            continue;
-        if ((players[i]->nb_player == 0 && i + 1 == player_id) ||
-            players[i]->nb_player == player_id) {
-            player_name = players[i]->player_name;
-            break;
-        }
-    }
-    if (player_name)
-        my_printf("The player %d(%s) is alive.\n", player_id, player_name);
-}
-
-static void update_values(vm_t *vm, int player_id, battle_t *battle,
-    process_t *process)
-{
-    display_live_message(vm, player_id);
-    battle->live_count++;
-    battle->last_live_player = player_id;
-    process->last_live_cycle = battle->cycle_count;
-}
-
-static void execute_live(vm_t *vm, process_t *process, battle_t *battle)
-{
-    int player_id = (vm->memory[(process->pc + 1) % MEM_SIZE] << 24) |
-                (vm->memory[(process->pc + 2) % MEM_SIZE] << 16) |
-                (vm->memory[(process->pc + 3) % MEM_SIZE] << 8) |
-                (vm->memory[(process->pc + 4) % MEM_SIZE]);
-    int valid_id = 0;
-    player_t *players[4] = {vm->player1, vm->player2,
-        vm->player3, vm->player4};
-
-    for (int i = 0; i < 4; i++) {
-        if (!players[i])
-            continue;
-        if ((players[i]->nb_player == 0 && i + 1 == player_id) ||
-            players[i]->nb_player == player_id) {
-            valid_id = 1;
-            break;
-        }
-    }
-    if (valid_id)
-        update_values(vm, player_id, battle, process);
-    process->pc = (process->pc + 5) % MEM_SIZE;
-}
-
 static void execute_instruction(vm_t *vm, process_t *process, battle_t *battle)
 {
     uint8_t opcode = vm->memory[process->pc];
@@ -71,6 +19,18 @@ static void execute_instruction(vm_t *vm, process_t *process, battle_t *battle)
         switch (opcode) {
             case 1:
                 execute_live(vm, process, battle);
+                break;
+            case 3:
+                execute_st(vm, process);
+                break;
+            case 4:
+                execute_add(vm, process);
+                break;
+            case 5:
+                execute_sub(vm, process);
+                break;
+            case 9:
+                execute_zjmp(vm, process);
                 break;
             default:
                 process->pc = (process->pc + 1) % MEM_SIZE;
