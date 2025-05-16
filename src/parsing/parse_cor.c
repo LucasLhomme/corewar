@@ -7,8 +7,6 @@
 
 #include <stdio.h>
 #include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
 #include "project.h"
 
 uint32_t swap_uint32(uint32_t val)
@@ -33,7 +31,7 @@ static int check_magic_number(FILE *file)
 
 static int read_champion(FILE *file, robot_t *robot)
 {
-    uint32_t size;
+    uint32_t size = 0;
 
     if (fread(robot->name, 1, PROG_NAME_LENGTH, file) != PROG_NAME_LENGTH)
         return 84;

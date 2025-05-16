@@ -17,7 +17,7 @@ static void init_registers(process_t *process)
 static int calculate_laddress(player_t *player, int index,
     int segment_size)
 {
-    int load_address;
+    int load_address = 0;
 
     if (!player->ad_player)
         load_address = (index * segment_size) % MEM_SIZE;
@@ -46,10 +46,10 @@ static process_t *create_process(player_t *player, int index, int segment_size)
 static process_t *initialize_processes(vm_t *vm)
 {
     process_t *head = NULL;
-    process_t *new_process;
+    process_t *new_process = NULL;
     player_t *players[4] = {vm->player1, vm->player2,
         vm->player3, vm->player4};
-    int segment_size;
+    int segment_size = 0;
 
     if (vm->nb_player <= 0)
         return NULL;

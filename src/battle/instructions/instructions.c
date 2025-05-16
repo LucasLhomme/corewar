@@ -79,8 +79,8 @@ static void store_memory(vm_t *vm, process_t *process, int reg_src)
 
 void execute_st(vm_t *vm, process_t *process, battle_t *battle)
 {
-    int reg_src;
-    int param_type;
+    int reg_src = 0;
+    int param_type = 0;
 
     (void)battle;
     reg_src = vm->memory[(process->pc + 2) % MEM_SIZE];
