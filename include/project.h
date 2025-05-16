@@ -110,15 +110,25 @@ void check_cycle_die(battle_t *battle, int *cycles_since_check);
 
 int check_dump_condition(vm_t *vm, battle_t *battle);
 
+/*Pointeur on function*/
+
+typedef int (*instruct_func_t)(vm_t *vm, process_t *process, battle_t *battle);
+
+typedef struct handle_instruct_func_t_s {
+    char *command;
+    instruct_func_t func;
+} handle_instruct_func_t_t;
+
+
 /* instructions */
 
-void execute_zjmp(vm_t *vm, process_t *process);
+void execute_zjmp(vm_t *vm, process_t *process, battle_t *battle);
 
-void execute_add(vm_t *vm, process_t *process);
+void execute_add(vm_t *vm, process_t *process, battle_t *battle);
 
-void execute_sub(vm_t *vm, process_t *process);
+void execute_sub(vm_t *vm, process_t *process, battle_t *battle);
 
-void execute_st(vm_t *vm, process_t *process);
+void execute_st(vm_t *vm, process_t *process, battle_t *battle);
 
 void execute_live(vm_t *vm, process_t *process, battle_t *battle);
 

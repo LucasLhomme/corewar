@@ -7,23 +7,26 @@
 
 #include "project.h"
 
-void execute_zjmp(vm_t *vm, process_t *process)
+void execute_zjmp(vm_t *vm, process_t *process, battle_t *battle)
 {
+    printf("coucou\n");
     int index = (vm->memory[(process->pc + 1) % MEM_SIZE] << 8) |
         (vm->memory[(process->pc + 2) % MEM_SIZE]);
 
+    (void)battle;
     if (process->carry == 1)
         process->pc = (process->pc + (index % IDX_MOD)) % MEM_SIZE;
     else
         process->pc = (process->pc + 3) % MEM_SIZE;
 }
 
-void execute_add(vm_t *vm, process_t *process)
+void execute_add(vm_t *vm, process_t *process, battle_t *battle)
 {
     int reg1 = vm->memory[(process->pc + 2) % MEM_SIZE];
     int reg2 = vm->memory[(process->pc + 3) % MEM_SIZE];
     int reg3 = vm->memory[(process->pc + 4) % MEM_SIZE];
 
+    (void)battle;
     if (reg1 >= 1 && reg1 <= REG_NUMBER &&
         reg2 >= 1 && reg2 <= REG_NUMBER &&
         reg3 >= 1 && reg3 <= REG_NUMBER) {
@@ -33,12 +36,13 @@ void execute_add(vm_t *vm, process_t *process)
     process->pc = (process->pc + 5) % MEM_SIZE;
 }
 
-void execute_sub(vm_t *vm, process_t *process)
+void execute_sub(vm_t *vm, process_t *process, battle_t *battle)
 {
     int reg1 = vm->memory[(process->pc + 2) % MEM_SIZE];
     int reg2 = vm->memory[(process->pc + 3) % MEM_SIZE];
     int reg3 = vm->memory[(process->pc + 4) % MEM_SIZE];
 
+    (void)battle;
     if (reg1 >= 1 && reg1 <= REG_NUMBER &&
         reg2 >= 1 && reg2 <= REG_NUMBER &&
         reg3 >= 1 && reg3 <= REG_NUMBER) {
@@ -48,12 +52,13 @@ void execute_sub(vm_t *vm, process_t *process)
     process->pc = (process->pc + 5) % MEM_SIZE;
 }
 
-void execute_st(vm_t *vm, process_t *process)
+void execute_st(vm_t *vm, process_t *process, battle_t *battle)
 {
     int reg_src, param2;
     int address = 0;
     int ind_value = 0;
 
+    (void)battle;
     reg_src = vm->memory[(process->pc + 2) % MEM_SIZE];
     if (reg_src < 1 || reg_src > REG_NUMBER) {
         process->pc = (process->pc + 4) % MEM_SIZE;

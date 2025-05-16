@@ -15,7 +15,7 @@ static void dump_memory(vm_t *vm)
     for (int i = 0; i < MEM_SIZE; i += BYTES_PER_LINE) {
         print_mem8(i);
         for (int j = 0; j < BYTES_PER_LINE && (i + j) < MEM_SIZE; j++) {
-            print_mem2(vm->memory[i + j]);
+            print_mem8(vm->memory[i + j]);
         }
         my_putchar('\n');
     }

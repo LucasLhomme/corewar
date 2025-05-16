@@ -7,37 +7,42 @@
 
 #include "project.h"
 
+
+typedef void (*instruction_handler_t)(vm_t *, process_t *, battle_t *);
+
+static const instruction_handler_t instruction_handlers[17] = {
+    NULL,                 // Index 0 is not used
+    execute_live,         // Opcode 1
+    NULL,                 // Opcode 2
+    execute_st,           // Opcode 3
+    execute_add,          // Opcode 4
+    execute_sub,          // Opcode 5
+    NULL,                 // Opcode 6
+    NULL,                 // Opcode 7
+    NULL,                 // Opcode 8
+    execute_zjmp,         // Opcode 9
+    NULL,                 // Opcode 10
+    NULL,                 // Opcode 11
+    NULL,                 // Opcode 12
+    NULL,                 // Opcode 13
+    NULL,                 // Opcode 14
+    NULL,                 // Opcode 15
+    NULL                  // Opcode 16
+};
+
 static void execute_instruction(vm_t *vm, process_t *process, battle_t *battle)
 {
     uint8_t opcode = vm->memory[process->pc];
 
-    if (opcode == 0) {
+    if (opcode == 0 || opcode > 16) {
         process->pc = (process->pc + 1) % MEM_SIZE;
         return;
-    }
-    if (opcode >= 1 && opcode <= 16) {
-        switch (opcode) {
-            case 1:
-                execute_live(vm, process, battle);
-                break;
-            case 3:
-                execute_st(vm, process);
-                break;
-            case 4:
-                execute_add(vm, process);
-                break;
-            case 5:
-                execute_sub(vm, process);
-                break;
-            case 9:
-                execute_zjmp(vm, process);
-                break;
-            default:
-                process->pc = (process->pc + 1) % MEM_SIZE;
-                break;
-        }
-    } else
+    }    
+    if (instruction_handlers[opcode] != NULL) {
+        instruction_handlers[opcode](vm, process, battle);
+    } else {
         process->pc = (process->pc + 1) % MEM_SIZE;
+    }
 }
 
 static void check_opcode(vm_t *vm, process_t *process)
@@ -61,6 +66,7 @@ static void process_instruction(vm_t *vm, process_t *process,
         process->wait_cycles--;
         return;
     }
+    printf("%i\n", process->pc);
     execute_instruction(vm, process, battle);
     check_opcode(vm, process);
 }
