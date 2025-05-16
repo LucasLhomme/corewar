@@ -53,12 +53,34 @@ void execute_sub(vm_t *vm, process_t *process, battle_t *battle)
     process->pc = (process->pc + 5) % MEM_SIZE;
 }
 
+static void store_register(vm_t *vm, process_t *process, int reg_src,
+    int reg_dest)
+{
+    if (reg_dest >= 1 && reg_dest <= REG_NUMBER)
+        process->registers[reg_dest - 1] = process->registers[reg_src - 1];
+    process->pc = (process->pc + 4) % MEM_SIZE;
+}
+
+static void store_memory(vm_t *vm, process_t *process, int reg_src)
+{
+    int ind_value = (vm->memory[(process->pc + 3) % MEM_SIZE] << 8) |
+        (vm->memory[(process->pc + 4) % MEM_SIZE]);
+    int address = (process->pc + (ind_value % IDX_MOD)) % MEM_SIZE;
+
+    vm->memory[address] = (process->registers[reg_src - 1] >> 24) & 0xFF;
+    vm->memory[(address + 1) % MEM_SIZE] = (process->registers[reg_src - 1]
+        >> 16) & 0xFF;
+    vm->memory[(address + 2) % MEM_SIZE] = (process->registers[reg_src - 1]
+        >> 8) & 0xFF;
+    vm->memory[(address + 3) % MEM_SIZE] = process->registers[reg_src - 1]
+        & 0xFF;
+    process->pc = (process->pc + 5) % MEM_SIZE;
+}
+
 void execute_st(vm_t *vm, process_t *process, battle_t *battle)
 {
     int reg_src;
-    int param2;
-    int address = 0;
-    int ind_value = 0;
+    int param_type;
 
     (void)battle;
     reg_src = vm->memory[(process->pc + 2) % MEM_SIZE];
@@ -66,24 +88,13 @@ void execute_st(vm_t *vm, process_t *process, battle_t *battle)
         process->pc = (process->pc + 4) % MEM_SIZE;
         return;
     }
-    param2 = vm->memory[(process->pc + 3) % MEM_SIZE];
-    if ((vm->memory[(process->pc + 1) % MEM_SIZE] >> 4 & 0x03) == 1) {
-        if (param2 >= 1 && param2 <= REG_NUMBER)
-            process->registers[param2 - 1] = process->registers[reg_src - 1];
-        process->pc = (process->pc + 4) % MEM_SIZE;
-    } else if ((vm->memory[(process->pc + 1) % MEM_SIZE] >> 4 & 0x03) == 3) {
-        ind_value = (vm->memory[(process->pc + 3) % MEM_SIZE] << 8) |
-            (vm->memory[(process->pc + 4) % MEM_SIZE]);
-        address = (process->pc + (ind_value % IDX_MOD)) % MEM_SIZE;
-        vm->memory[address] = (process->registers[reg_src - 1] >> 24) & 0xFF;
-        vm->memory[(address + 1) % MEM_SIZE] = (process->registers[reg_src - 1]
-        >> 16) & 0xFF;
-        vm->memory[(address + 2) % MEM_SIZE] = (process->registers[reg_src - 1]
-        >> 8) & 0xFF;
-        vm->memory[(address + 3) % MEM_SIZE] = process->registers[reg_src - 1]
-        & 0xFF;
-        process->pc = (process->pc + 5) % MEM_SIZE;
-    } else
+    param_type = (vm->memory[(process->pc + 1) % MEM_SIZE] >> 4) & 0x03;
+    if (param_type == 1)
+        store_register(vm, process, reg_src,
+            vm->memory[(process->pc + 3) % MEM_SIZE]);
+    else if (param_type == 3)
+        store_memory(vm, process, reg_src);
+    else
         process->pc = (process->pc + 5) % MEM_SIZE;
 }
 

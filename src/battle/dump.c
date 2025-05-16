@@ -13,7 +13,7 @@ static void dump_memory(vm_t *vm)
     const int BYTES_PER_LINE = 32;
 
     for (int i = 0; i < MEM_SIZE; i += BYTES_PER_LINE) {
-        print_mem8(i);
+        print_address_hex(i);
         for (int j = 0; j < BYTES_PER_LINE && (i + j) < MEM_SIZE; j++) {
             print_mem8(vm->memory[i + j]);
         }

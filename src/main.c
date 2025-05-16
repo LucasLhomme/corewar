@@ -37,8 +37,8 @@ static void display_robot(robot_t *robot, int num)
     my_printf("\nPlayer %d:\nName: %s\n", num, robot->name);
     for (uint32_t i = 0; i < robot->code_size; i++) {
         if (i % 16 == 0)
-            print_mem8(i);
-        print_mem2(robot->code[i]);
+            print_address_hex(i);
+        print_mem8(robot->code[i]);
         if ((i + 1) % 16 == 0)
             my_putchar('\n');
     }
