@@ -7,9 +7,6 @@
 
 #include "project.h"
 
-
-typedef void (*instruction_handler_t)(vm_t *, process_t *, battle_t *);
-
 static const instruction_handler_t instruction_handlers[17] = {
     execute_live,
     execute_st,

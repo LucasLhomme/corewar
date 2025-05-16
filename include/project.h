@@ -112,11 +112,13 @@ int check_dump_condition(vm_t *vm, battle_t *battle);
 
 /*Pointeur on function*/
 
-typedef int (*instruct_func_t)(vm_t *vm, process_t *process, battle_t *battle);
+
+
+typedef void (*instruction_handler_t)(vm_t *, process_t *, battle_t *);
 
 typedef struct handle_instruct_func_t_s {
     char *command;
-    instruct_func_t func;
+    instruction_handler_t func;
 } handle_instruct_func_t_t;
 
 
